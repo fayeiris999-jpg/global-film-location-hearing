@@ -1,0 +1,1635 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Global Film Location Hearing | Teacher Guide</title>
+  <style>
+    :root {
+      --navy-950: #0b1d2c;
+      --navy-900: #10283d;
+      --navy-800: #173b56;
+      --paper: #f7f3e9;
+      --paper-strong: #fffdf8;
+      --ink: #182632;
+      --muted: #5a6973;
+      --teal: #007c83;
+      --teal-pale: #dceeee;
+      --gold: #e0a51b;
+      --gold-pale: #fbf0cd;
+      --coral: #c9513f;
+      --coral-pale: #f6dfda;
+      --green: #2d7b57;
+      --line: #b9c2c5;
+      --white: #ffffff;
+      --shadow-1: 0 2px 0 rgba(9, 27, 40, 0.14), 0 12px 28px rgba(9, 27, 40, 0.12);
+      --radius: 6px;
+      --space-1: 0.35rem;
+      --space-2: 0.65rem;
+      --space-3: 1rem;
+      --space-4: 1.4rem;
+      --space-5: 2rem;
+      --display: "Avenir Next Condensed", "DIN Condensed", "Bahnschrift Condensed", "PingFang SC", sans-serif;
+      --body: "Avenir Next", "Gill Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; min-height: 100%; }
+
+    body {
+      background: var(--navy-950);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      letter-spacing: 0;
+      overflow: hidden;
+    }
+
+    button { font: inherit; letter-spacing: 0; }
+
+    button:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    [hidden] { display: none !important; }
+
+    .app {
+      display: grid;
+      grid-template-rows: 64px 78px minmax(0, 1fr) 66px;
+      min-height: 100vh;
+      min-height: 100svh;
+      background: var(--paper);
+    }
+
+    .command-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: 0 1.25rem;
+      color: var(--white);
+      background: var(--navy-900);
+      border-bottom: 4px solid var(--gold);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 0.8rem;
+    }
+
+    .clapper {
+      position: relative;
+      width: 42px;
+      height: 31px;
+      flex: 0 0 auto;
+      border: 2px solid var(--white);
+      background: var(--teal);
+    }
+
+    .clapper::before {
+      content: "";
+      position: absolute;
+      width: 44px;
+      height: 10px;
+      left: -3px;
+      top: -10px;
+      border: 2px solid var(--white);
+      background: var(--coral);
+      transform: rotate(-7deg);
+      transform-origin: left bottom;
+    }
+
+    .brand-copy { min-width: 0; }
+
+    .brand-kicker {
+      margin: 0;
+      color: #a9dfe0;
+      font-family: var(--display);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .brand-title {
+      margin: 0;
+      overflow: hidden;
+      color: var(--white);
+      font-family: var(--display);
+      font-size: 1.18rem;
+      font-weight: 900;
+      line-height: 1.05;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .utility-actions,
+    .nav-actions,
+    .inline-actions,
+    .timer-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .icon-button,
+    .control-button,
+    .reveal-button,
+    .question-button,
+    .vote-button,
+    .chip,
+    .progress-step {
+      min-height: 40px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      width: 42px;
+      place-items: center;
+      padding: 0;
+      color: var(--white);
+      background: transparent;
+      border-color: rgba(255,255,255,0.35);
+      font-size: 1.15rem;
+    }
+
+    .icon-button:hover { background: var(--navy-800); }
+
+    .film-progress {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(136px, 1fr));
+      gap: 3px;
+      overflow-x: auto;
+      padding: 12px 1.2rem;
+      background: var(--navy-950);
+      border-top: 2px dashed rgba(255,255,255,0.28);
+      border-bottom: 2px dashed rgba(255,255,255,0.28);
+      scrollbar-width: thin;
+    }
+
+    .progress-step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      grid-template-rows: 1fr 1fr;
+      min-width: 136px;
+      padding: 0.35rem 0.65rem;
+      color: #b7c5cd;
+      background: var(--navy-900);
+      border-color: #385065;
+      text-align: left;
+    }
+
+    .progress-step:hover { border-color: var(--gold); }
+
+    .progress-step.active {
+      color: var(--navy-950);
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .progress-step.complete:not(.active) {
+      color: var(--white);
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .step-number {
+      grid-row: 1 / 3;
+      align-self: center;
+      font-family: var(--display);
+      font-size: 1.45rem;
+      font-weight: 900;
+    }
+
+    .step-label {
+      align-self: end;
+      font-family: var(--display);
+      font-size: 0.88rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .step-skill {
+      align-self: start;
+      margin-top: 0.18rem;
+      font-size: 0.66rem;
+      line-height: 1;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 0;
+      overflow: auto;
+      background-color: var(--paper);
+      background-image: linear-gradient(90deg, transparent 0, transparent 39px, rgba(0,124,131,0.08) 40px, transparent 41px);
+    }
+
+    .scene {
+      width: min(1500px, 100%);
+      min-height: 100%;
+      margin: 0 auto;
+      padding: 1.15rem 1.5rem 1.35rem;
+      animation: scene-in 260ms cubic-bezier(.22,.74,.2,1);
+    }
+
+    @keyframes scene-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .scene-heading {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 3px solid var(--teal);
+    }
+
+    .eyebrow {
+      margin: 0 0 0.18rem;
+      color: var(--coral);
+      font-family: var(--display);
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { letter-spacing: 0; }
+
+    h1, h2, h3 { font-family: var(--display); }
+
+    h1 {
+      margin: 0;
+      color: var(--navy-950);
+      font-size: 2.55rem;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--navy-950);
+      font-size: 2rem;
+      font-weight: 950;
+      line-height: 1.05;
+    }
+
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.05rem;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    p { margin: 0; line-height: 1.45; }
+
+    .scene-subtitle {
+      max-width: 64rem;
+      margin-top: 0.35rem;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+
+    .phase-tag {
+      padding: 0.35rem 0.65rem;
+      color: var(--navy-950);
+      background: var(--gold-pale);
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      font-family: var(--display);
+      font-size: 0.78rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .briefing-layout,
+    .two-column,
+    .judge-grid,
+    .hearing-grid,
+    .takeaway-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .briefing-layout { grid-template-columns: minmax(0, 1.18fr) minmax(350px, 0.82fr); }
+    .two-column { grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr); }
+    .judge-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .hearing-grid { grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr); }
+    .takeaway-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+    .mission-panel {
+      padding: 1.2rem 1.3rem;
+      color: var(--white);
+      background: var(--navy-900);
+      border-left: 8px solid var(--gold);
+      box-shadow: var(--shadow-1);
+    }
+
+    .mission-panel h3 { color: #9fe0df; font-size: 0.9rem; text-transform: uppercase; }
+    .mission-question { margin-top: 0.4rem; font-family: var(--display); font-size: 1.55rem; font-weight: 900; line-height: 1.18; }
+    .mission-output { margin-top: 0.8rem; color: #dbe7ec; font-size: 0.95rem; }
+
+    .route-board {
+      position: relative;
+      min-height: 220px;
+      overflow: hidden;
+      background: #d9e6e3;
+      border: 1px solid #8ca4a5;
+      box-shadow: var(--shadow-1);
+    }
+
+    .route-board svg { width: 100%; height: 100%; min-height: 220px; display: block; }
+
+    .location-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.85rem;
+    }
+
+    .location-card {
+      padding: 0.75rem 0.85rem;
+      background: var(--paper-strong);
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--teal);
+      border-radius: var(--radius);
+    }
+
+    .location-card:nth-child(2) { border-top-color: var(--gold); }
+    .location-card:nth-child(3) { border-top-color: var(--coral); }
+    .location-card strong { display: block; color: var(--navy-900); font-family: var(--display); font-size: 1.05rem; }
+    .location-card span { color: var(--muted); font-size: 0.78rem; }
+
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 260px;
+      padding: 0.48rem 0.55rem 0.48rem 0.8rem;
+      background: var(--navy-950);
+      border-radius: var(--radius);
+      color: var(--white);
+    }
+
+    .timer-display {
+      min-width: 78px;
+      color: var(--gold);
+      font-family: "Menlo", "Consolas", monospace;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .timer.running .timer-display { color: var(--white); }
+    .timer.elapsed .timer-display { color: #ff9f8d; }
+
+    .timer-actions button {
+      min-height: 34px;
+      padding: 0.25rem 0.55rem;
+      color: var(--white);
+      background: var(--navy-800);
+      border: 1px solid #557088;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .timer-actions button:hover { background: var(--teal); }
+
+    .work-panel,
+    .support-panel,
+    .evidence-panel,
+    .chain-panel,
+    .role-panel,
+    .jury-panel {
+      background: var(--paper-strong);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-1);
+    }
+
+    .work-panel { overflow: hidden; }
+
+    .panel-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.58rem 0.8rem;
+      color: var(--white);
+      background: var(--navy-900);
+      font-family: var(--display);
+      font-size: 0.82rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .country-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .country-table th,
+    .country-table td {
+      padding: 0.62rem 0.68rem;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+
+    .country-table th {
+      color: var(--navy-900);
+      background: var(--teal-pale);
+      font-family: var(--display);
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+
+    .country-table td { height: 48px; font-size: 0.9rem; }
+    .country-table td:first-child { color: var(--navy-900); font-family: var(--display); font-weight: 900; }
+    .country-table th:last-child, .country-table td:last-child { border-right: 0; }
+
+    .answer-row td { color: var(--green); background: #edf6f0; font-weight: 700; }
+
+    .support-panel { padding: 0.9rem; }
+    .support-panel h3 { color: var(--teal); }
+
+    .instruction-list,
+    .question-list,
+    .check-list {
+      margin: 0;
+      padding-left: 1.2rem;
+      line-height: 1.5;
+    }
+
+    .instruction-list li,
+    .question-list li,
+    .check-list li { margin-bottom: 0.35rem; }
+
+    .teacher-toggle-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.75rem;
+    }
+
+    .reveal-button,
+    .question-button {
+      padding: 0.5rem 0.8rem;
+      color: var(--white);
+      background: var(--teal);
+      border-color: var(--teal);
+      font-weight: 800;
+    }
+
+    .reveal-button:hover,
+    .question-button:hover { background: var(--navy-800); }
+
+    .reveal-content {
+      margin-top: 0.7rem;
+      padding: 0.8rem;
+      background: var(--gold-pale);
+      border-left: 5px solid var(--gold);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .teacher-guide {
+      margin-top: 0.65rem;
+      padding: 0.8rem 0.9rem;
+      background: #e8edf0;
+      border: 1px solid #95a5ad;
+      border-left: 6px solid var(--navy-800);
+      border-radius: var(--radius);
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 1.1fr 1.1fr;
+      gap: 0.65rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .guide-grid.guide-diff {
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 0;
+    }
+
+    .guide-item {
+      padding-right: 0.55rem;
+      border-right: 1px solid #b4bec3;
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .guide-item:last-child { border-right: 0; }
+    .guide-grid.guide-diff .guide-item { padding-right: 0; border-right: 0; }
+    .guide-item strong { display: block; margin-bottom: 0.16rem; color: var(--navy-900); font-family: var(--display); }
+
+    .certainty-scale {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .certainty-item {
+      padding: 0.55rem 0.65rem;
+      text-align: center;
+      border-right: 1px solid var(--line);
+    }
+
+    .certainty-item:last-child { border-right: 0; }
+    .certainty-item:nth-child(1) { background: var(--teal-pale); }
+    .certainty-item:nth-child(2) { background: var(--gold-pale); }
+    .certainty-item:nth-child(3) { background: var(--coral-pale); }
+    .certainty-item strong { display: block; font-family: var(--display); font-size: 1rem; }
+    .certainty-item span { color: var(--muted); font-size: 0.72rem; }
+
+    .evidence-panel { padding: 0.85rem; }
+    .evidence-panel[data-tone="fact"] { border-top: 5px solid var(--teal); }
+    .evidence-panel[data-tone="inference"] { border-top: 5px solid var(--gold); }
+    .evidence-panel[data-tone="past"] { border-top: 5px solid var(--coral); }
+    .evidence-label { display: inline-block; margin-bottom: 0.4rem; color: var(--muted); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+    .evidence-sentence { min-height: 58px; font-size: 1rem; font-weight: 700; line-height: 1.38; }
+    .partner-prompt { margin-top: 0.55rem; padding-top: 0.5rem; color: var(--teal); border-top: 1px dashed var(--line); font-size: 0.82rem; font-weight: 800; }
+
+    .chain-panel { padding: 0.9rem; }
+
+    .chain-builder {
+      display: grid;
+      grid-template-columns: 1fr 0.62fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .chip-bank h3 { color: var(--navy-900); font-size: 0.8rem; text-transform: uppercase; }
+
+    .chip-list { display: grid; gap: 0.42rem; }
+
+    .chip {
+      width: 100%;
+      min-height: 46px;
+      padding: 0.45rem 0.55rem;
+      color: var(--ink);
+      background: var(--paper-strong);
+      border-color: var(--line);
+      text-align: left;
+      font-size: 0.82rem;
+      line-height: 1.25;
+    }
+
+    .chip:hover { border-color: var(--teal); }
+    .chip.selected { color: var(--white); background: var(--teal); border-color: var(--teal); }
+    .chip-bank:nth-child(2) .chip.selected { color: var(--navy-950); background: var(--gold); border-color: var(--gold); }
+    .chip-bank:nth-child(3) .chip.selected { background: var(--coral); border-color: var(--coral); }
+
+    .chain-output {
+      display: grid;
+      min-height: 90px;
+      margin-top: 0.85rem;
+      padding: 0.85rem 1rem;
+      place-items: center;
+      color: var(--navy-950);
+      background: var(--gold-pale);
+      border: 2px solid var(--gold);
+      border-radius: var(--radius);
+      font-family: var(--display);
+      font-size: 1.3rem;
+      font-weight: 900;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .purpose-strip {
+      margin-top: 0.65rem;
+      padding: 0.55rem 0.7rem;
+      color: var(--navy-900);
+      background: var(--teal-pale);
+      border-left: 5px solid var(--teal);
+      font-size: 0.86rem;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .role-panel { padding: 0.7rem; border-top: 5px solid var(--teal); }
+    .role-panel:nth-child(2) { border-top-color: var(--gold); }
+    .role-panel:nth-child(3) { border-top-color: var(--coral); }
+    .role-panel:nth-child(4) { border-top-color: var(--navy-800); }
+    .role-panel h3 { font-size: 0.9rem; }
+    .role-panel p { color: var(--muted); font-size: 0.76rem; line-height: 1.35; }
+
+    .cer-board {
+      display: grid;
+      grid-template-columns: 0.75fr 1.05fr 1.2fr 1.1fr;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-1);
+    }
+
+    .cer-part {
+      min-height: 148px;
+      padding: 0.75rem;
+      background: var(--paper-strong);
+      border-right: 1px solid var(--line);
+    }
+
+    .cer-part:last-child { border-right: 0; }
+    .cer-letter { display: block; margin-bottom: 0.4rem; color: var(--coral); font-family: var(--display); font-size: 1.65rem; font-weight: 950; }
+    .cer-part:nth-child(2) .cer-letter { color: var(--teal); }
+    .cer-part:nth-child(3) .cer-letter { color: #9a6b00; }
+    .cer-part:nth-child(4) .cer-letter { color: var(--navy-800); }
+    .cer-part strong { display: block; margin-bottom: 0.35rem; font-family: var(--display); font-size: 0.85rem; }
+    .cer-part p { font-size: 0.78rem; line-height: 1.38; }
+
+    .question-stage {
+      display: grid;
+      min-height: 170px;
+      place-items: center;
+      padding: 1.1rem;
+      color: var(--white);
+      background: var(--navy-900);
+      border-left: 8px solid var(--coral);
+      box-shadow: var(--shadow-1);
+      text-align: center;
+    }
+
+    .question-output {
+      max-width: 44rem;
+      font-family: var(--display);
+      font-size: 1.55rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .question-button { margin-top: 0.85rem; background: var(--coral); border-color: var(--coral); }
+
+    .jury-panel { padding: 0.85rem; }
+    .jury-panel h3 { color: var(--teal); }
+
+    .check-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .check-list li {
+      position: relative;
+      padding: 0.4rem 0 0.4rem 1.85rem;
+      border-bottom: 1px solid #d7dddd;
+      font-size: 0.86rem;
+    }
+
+    .check-list li::before {
+      content: "";
+      position: absolute;
+      left: 0.2rem;
+      top: 0.43rem;
+      width: 17px;
+      height: 17px;
+      border: 2px solid var(--teal);
+      border-radius: 3px;
+      background: var(--white);
+    }
+
+    .vote-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+      margin-top: 0.85rem;
+    }
+
+    .vote-button {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 0.55rem 0.75rem;
+      color: var(--navy-900);
+      background: var(--paper-strong);
+      border-color: var(--line);
+      font-family: var(--display);
+      font-weight: 900;
+      text-align: left;
+    }
+
+    .vote-button:hover { border-color: var(--coral); transform: translateY(-1px); }
+    .vote-count { display: grid; width: 30px; height: 30px; place-items: center; color: var(--white); background: var(--teal); border-radius: 50%; }
+
+    .final-frame {
+      margin-top: 0.75rem;
+      padding: 0.72rem 0.9rem;
+      background: var(--coral-pale);
+      border-left: 6px solid var(--coral);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .takeaway-card {
+      position: relative;
+      min-height: 165px;
+      padding: 0.8rem;
+      background: var(--paper-strong);
+      border: 1px solid var(--line);
+      border-top: 7px solid var(--teal);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-1);
+    }
+
+    .takeaway-card:nth-child(2) { border-top-color: var(--gold); }
+    .takeaway-card:nth-child(3) { border-top-color: var(--coral); }
+    .takeaway-card:nth-child(4) { border-top-color: var(--navy-800); }
+    .takeaway-card:nth-child(5) { border-top-color: var(--green); }
+    .takeaway-card .big-number { color: #c7d2d6; font-family: var(--display); font-size: 2.3rem; font-weight: 950; line-height: 1; }
+    .takeaway-card h3 { margin-top: 0.25rem; color: var(--navy-900); }
+    .takeaway-card p { color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
+
+    .takeaway-quote {
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      color: var(--white);
+      background: var(--navy-900);
+      border-left: 8px solid var(--gold);
+      font-family: var(--display);
+      font-size: 1.22rem;
+      font-weight: 900;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .control-deck {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1.25rem;
+      color: var(--white);
+      background: var(--navy-900);
+      border-top: 1px solid #41596d;
+    }
+
+    .scene-count {
+      color: #b7c8d1;
+      font-family: var(--display);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .keyboard-hint { justify-self: center; color: #93a7b3; font-size: 0.72rem; }
+
+    .nav-actions { justify-self: end; }
+
+    .control-button {
+      min-width: 110px;
+      padding: 0.5rem 0.8rem;
+      color: var(--white);
+      background: var(--navy-800);
+      border-color: #577186;
+      font-weight: 800;
+    }
+
+    .control-button.primary { color: var(--navy-950); background: var(--gold); border-color: var(--gold); }
+    .control-button:hover:not(:disabled) { background: var(--teal); border-color: var(--teal); color: var(--white); }
+    .control-button:disabled { cursor: not-allowed; opacity: 0.38; }
+
+    .modal-backdrop {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      background: rgba(5, 18, 28, 0.76);
+    }
+
+    .modal {
+      width: min(480px, 100%);
+      padding: 1.2rem;
+      background: var(--paper-strong);
+      border: 2px solid var(--gold);
+      border-radius: var(--radius);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.36);
+    }
+
+    .modal h2 { font-size: 1.5rem; }
+    .modal p { margin: 0.6rem 0 1rem; color: var(--muted); }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 0.6rem; }
+    .modal .control-button { color: var(--navy-900); background: var(--paper); border-color: var(--line); }
+    .modal .control-button.danger { color: var(--white); background: var(--coral); border-color: var(--coral); }
+
+    @media (max-width: 980px) {
+      .briefing-layout,
+      .two-column,
+      .hearing-grid { grid-template-columns: 1fr; }
+      .judge-grid { grid-template-columns: 1fr 1fr; }
+      .role-grid { grid-template-columns: 1fr 1fr; }
+      .cer-board { grid-template-columns: 1fr 1fr; }
+      .cer-part:nth-child(2) { border-right: 0; }
+      .cer-part:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .takeaway-grid { grid-template-columns: repeat(3, 1fr); }
+      .guide-grid, .guide-grid.guide-diff { grid-template-columns: 1fr 1fr; }
+      .guide-item { border-right: 0; border-bottom: 1px solid #b4bec3; padding-bottom: 0.4rem; }
+      .stage { background-image: none; }
+    }
+
+    @media (max-width: 760px) {
+      body { overflow: auto; }
+      .app { display: block; min-height: 100svh; }
+      .command-bar { min-height: 64px; padding: 0.55rem 0.75rem; }
+      .brand-title { font-size: 1rem; }
+      .brand-kicker { display: none; }
+      .utility-actions .icon-button:first-child { display: none; }
+      .film-progress { grid-template-columns: repeat(5, 142px); position: sticky; top: 0; z-index: 5; }
+      .stage { overflow: visible; }
+      .scene { min-height: auto; padding: 1rem 0.8rem 6.5rem; }
+      .scene-heading { grid-template-columns: 1fr; align-items: start; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.65rem; }
+      .briefing-layout,
+      .judge-grid,
+      .hearing-grid,
+      .takeaway-grid,
+      .chain-builder,
+      .location-row,
+      .vote-board,
+      .role-grid,
+      .guide-grid, .guide-grid.guide-diff { grid-template-columns: 1fr; }
+      .two-column { grid-template-columns: 1fr; }
+      .certainty-scale { grid-template-columns: 1fr; }
+      .certainty-item { border-right: 0; border-bottom: 1px solid var(--line); }
+      .certainty-item:last-child { border-bottom: 0; }
+      .cer-board { grid-template-columns: 1fr; }
+      .cer-part { min-height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      .cer-part:last-child { border-bottom: 0; }
+      .country-table { min-width: 690px; }
+      .work-panel { overflow-x: auto; }
+      .timer { min-width: 0; width: 100%; justify-content: space-between; }
+      .control-deck {
+        position: fixed;
+        z-index: 10;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        grid-template-columns: 1fr auto;
+        min-height: 70px;
+        padding: 0.5rem 0.75rem;
+      }
+      .keyboard-hint { display: none; }
+      .control-button { min-width: 92px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @media print {
+      body { overflow: visible; background: var(--white); }
+      .app { display: block; }
+      .command-bar, .film-progress, .control-deck, .teacher-toggle-row, .timer, .modal-backdrop { display: none !important; }
+      .scene { display: block !important; min-height: auto; page-break-after: always; }
+      .scene[hidden] { display: block !important; }
+      .teacher-guide[hidden], .reveal-content[hidden] { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="command-bar">
+      <div class="brand">
+        <span class="clapper" aria-hidden="true"></span>
+        <div class="brand-copy">
+          <p class="brand-kicker">Unlock L4 · Unit 1 Globalization</p>
+          <p class="brand-title">Global Film Location Hearing</p>
+        </div>
+      </div>
+      <div class="utility-actions">
+        <button class="icon-button" type="button" data-action="fullscreen" title="进入或退出全屏" aria-label="进入或退出全屏">⛶</button>
+        <button class="icon-button" type="button" data-action="reset" title="重置整节课" aria-label="重置整节课">↺</button>
+      </div>
+    </header>
+
+    <nav class="film-progress" aria-label="Five-step learning sequence">
+      <button class="progress-step" type="button" data-progress-index="1">
+        <span class="step-number">01</span><span class="step-label">LISTEN</span><span class="step-skill">country · cause · result</span>
+      </button>
+      <button class="progress-step" type="button" data-progress-index="2">
+        <span class="step-number">02</span><span class="step-label">JUDGE</span><span class="step-skill">evidence · certainty</span>
+      </button>
+      <button class="progress-step" type="button" data-progress-index="3">
+        <span class="step-number">03</span><span class="step-label">CONNECT</span><span class="step-skill">cause · effect</span>
+      </button>
+      <button class="progress-step" type="button" data-progress-index="4">
+        <span class="step-number">04</span><span class="step-label">ARGUE</span><span class="step-skill">claim · evidence · reason</span>
+      </button>
+      <button class="progress-step" type="button" data-progress-index="5">
+        <span class="step-number">05</span><span class="step-label">DECIDE</span><span class="step-skill">question · vote</span>
+      </button>
+    </nav>
+
+    <main class="stage" id="main-stage">
+      <section class="scene" data-scene="briefing" aria-hidden="false" aria-labelledby="briefing-title">
+        <div class="scene-heading">
+          <div>
+            <p class="eyebrow">Mission briefing · 2 min</p>
+            <h1 id="briefing-title" tabindex="-1">Choose the next film location.</h1>
+            <p class="scene-subtitle">你们是一家国际电影公司的选址顾问。今天的决定必须建立在听力证据之上。</p>
+          </div>
+          <div class="timer" data-timer data-seconds="120">
+            <span class="timer-display" data-timer-display aria-live="polite">02:00</span>
+            <div class="timer-actions">
+              <button type="button" data-action="timer-start">▶ Start</button>
+              <button type="button" data-action="timer-reset">↺ Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="briefing-layout">
+          <div>
+            <div class="mission-panel">
+              <h3>Board decision</h3>
+              <p class="mission-question">Should the company film in Canada, Mexico or Jordan?</p>
+              <p class="mission-output">Final output: a 60-second recommendation that includes a claim, listening evidence, reasoning and a justified degree of certainty.</p>
+            </div>
+            <div class="location-row" aria-label="Candidate locations">
+              <div class="location-card"><strong>CANADA</strong><span>Tax-credit evidence</span></div>
+              <div class="location-card"><strong>MEXICO</strong><span>Export-policy evidence</span></div>
+              <div class="location-card"><strong>JORDAN</strong><span>VAT evidence</span></div>
+            </div>
+          </div>
+
+          <div class="route-board" aria-label="Film route map from Hollywood to Canada, Mexico and Jordan">
+            <svg viewBox="0 0 640 330" role="img" aria-labelledby="map-title map-desc">
+              <title id="map-title">Global film location route map</title>
+              <desc id="map-desc">A simplified world map connects Hollywood with Canada, Mexico and Jordan.</desc>
+              <rect width="640" height="330" fill="#d9e6e3"/>
+              <g fill="#9bb7b0" opacity="0.82">
+                <path d="M65 80l68-42 92 20 26 45-35 29-54-4-29 35-51-27z"/>
+                <path d="M179 159l40 19 19 62-27 67-30-16-5-66-29-38z"/>
+                <path d="M338 76l57-30 72 11 46 33-20 31-53-2-22 31-43-24-46 3-31-30z"/>
+                <path d="M393 144l65-8 42 43-18 79-43 43-36-66-24-45z"/>
+                <path d="M525 220l54-21 39 28-16 37-57 3-25-25z"/>
+              </g>
+              <g fill="none" stroke="#c9513f" stroke-width="4" stroke-dasharray="9 8">
+                <path d="M109 117Q142 57 178 64"/>
+                <path d="M109 117Q137 157 162 172"/>
+                <path d="M109 117Q337 17 453 131"/>
+              </g>
+              <g fill="#173b56" stroke="#fff" stroke-width="3">
+                <circle cx="109" cy="117" r="9"/><circle cx="178" cy="64" r="9"/><circle cx="162" cy="172" r="9"/><circle cx="453" cy="131" r="9"/>
+              </g>
+              <g font-family="Avenir Next, sans-serif" font-size="16" font-weight="700" fill="#10283d">
+                <text x="64" y="143">Hollywood</text><text x="148" y="45">Canada</text><text x="134" y="202">Mexico</text><text x="461" y="126">Jordan</text>
+              </g>
+              <g transform="translate(486 24)">
+                <rect x="0" y="20" width="112" height="61" rx="4" fill="#10283d"/>
+                <path d="M0 20L20 0l18 20L58 0l18 20L96 0l16 16v4z" fill="#e0a51b"/>
+                <text x="13" y="59" font-family="Avenir Next Condensed, sans-serif" font-size="17" font-weight="900" fill="#fff">LOCATION 01</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="teacher-toggle-row">
+          <button class="reveal-button" type="button" data-guide-toggle="guide-briefing" aria-expanded="false">Teacher guide</button>
+        </div>
+        <div class="teacher-guide" id="guide-briefing" hidden>
+          <div class="guide-grid">
+            <div class="guide-item"><strong>Say</strong>“Today you are film-location advisers. A good decision begins with accurate listening.”</div>
+            <div class="guide-item"><strong>Grouping &amp; timing</strong>Whole class · 2 min.</div>
+            <div class="guide-item"><strong>Product</strong>Everyone can state the board question and name the three locations.</div>
+            <div class="guide-item"><strong>Observe</strong>Who names a location with a reason, not just a word?</div>
+          </div>
+          <div class="guide-grid guide-diff">
+            <div class="guide-item"><strong>Support</strong>Name the three locations aloud.</div>
+            <div class="guide-item"><strong>Core</strong>Predict one reason filmmakers go abroad.</div>
+            <div class="guide-item"><strong>Challenge</strong>Predict one possible hidden cost.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" data-scene="listen" aria-hidden="true" aria-labelledby="listen-title" hidden>
+        <div class="scene-heading">
+          <div>
+            <p class="eyebrow">Step 1 · Individual work · 6 min</p>
+            <h2 id="listen-title" tabindex="-1">Build the country file.</h2>
+            <p class="scene-subtitle">Listen for structure, not every word. 只记录国家、原因或政策、结果。</p>
+          </div>
+          <div class="timer" data-timer data-seconds="360">
+            <span class="timer-display" data-timer-display aria-live="polite">06:00</span>
+            <div class="timer-actions"><button type="button" data-action="timer-start">▶ Start</button><button type="button" data-action="timer-reset">↺ Reset</button></div>
+          </div>
+        </div>
+
+        <div class="two-column">
+          <div class="work-panel">
+            <div class="panel-label"><span>Track 1.5 · Country file</span><span>Round 1: country · Round 2: cause + result</span></div>
+            <table class="country-table">
+              <thead><tr><th>COUNTRY</th><th>CAUSE / POLICY</th><th>RESULT</th><th>WHO BENEFITS?</th></tr></thead>
+              <tbody>
+                <tr><td>Canada</td><td></td><td></td><td></td></tr>
+                <tr><td>Mexico</td><td></td><td></td><td></td></tr>
+                <tr><td>Jordan</td><td></td><td></td><td></td></tr>
+              </tbody>
+            </table>
+            <div class="inline-actions" style="padding:.65rem .75rem; justify-content:flex-end;">
+              <button class="reveal-button" type="button" data-reveal="country-key" aria-expanded="false">Reveal suggested notes</button>
+            </div>
+            <div class="reveal-content" id="country-key" hidden>
+              <table class="country-table">
+                <tbody class="answer-row">
+                  <tr><td>Canada</td><td>tax credits</td><td>lower production costs</td><td>film companies; local workers</td></tr>
+                  <tr><td>Mexico</td><td>foreign films treated as exports</td><td>certain taxes avoided</td><td>producers; local economy</td></tr>
+                  <tr><td>Jordan</td><td>producers avoid VAT</td><td>more films made there</td><td>producers; local film industry</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <aside class="support-panel">
+            <h3>Listening protocol</h3>
+            <ol class="instruction-list">
+              <li>First listen: write only the country.</li>
+              <li>Second listen: add one cause and one result.</li>
+              <li>Pair check: accept only supported information.</li>
+            </ol>
+            <div class="reveal-content" style="margin-top:.75rem;">
+              <strong>Note form</strong><br>
+              Canada → tax credits → lower costs<br>
+              <span style="color:var(--muted)">No full sentences yet.</span>
+            </div>
+          </aside>
+        </div>
+
+        <div class="teacher-toggle-row"><button class="reveal-button" type="button" data-guide-toggle="guide-listen" aria-expanded="false">Teacher guide</button></div>
+        <div class="teacher-guide" id="guide-listen" hidden>
+          <div class="guide-grid">
+            <div class="guide-item"><strong>Say</strong>“Do not chase every word. Build a three-part file: country, cause, result.”</div>
+            <div class="guide-item"><strong>Grouping &amp; timing</strong>Individual × 2 listens, then pair check · 6 min.</div>
+            <div class="guide-item"><strong>Product</strong>Three rows of brief notes; no full transcript.</div>
+            <div class="guide-item"><strong>Observe</strong>Do students link cause to result, or only copy single words?</div>
+          </div>
+          <div class="guide-grid guide-diff">
+            <div class="guide-item"><strong>Support</strong>Complete only cause/policy after countries are given.</div>
+            <div class="guide-item"><strong>Core</strong>Complete all three columns independently.</div>
+            <div class="guide-item"><strong>Challenge</strong>Add who benefits and mark one inference.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" data-scene="judge" aria-hidden="true" aria-labelledby="judge-title" hidden>
+        <div class="scene-heading">
+          <div>
+            <p class="eyebrow">Step 2 · Pair work · 6 min</p>
+            <h2 id="judge-title" tabindex="-1">Judge the evidence.</h2>
+            <p class="scene-subtitle">Information becomes evidence only after you judge its source and certainty.</p>
+          </div>
+          <div class="timer" data-timer data-seconds="360">
+            <span class="timer-display" data-timer-display aria-live="polite">06:00</span>
+            <div class="timer-actions"><button type="button" data-action="timer-start">▶ Start</button><button type="button" data-action="timer-reset">↺ Reset</button></div>
+          </div>
+        </div>
+
+        <div class="certainty-scale" aria-label="Certainty scale">
+          <div class="certainty-item"><strong>MUST</strong><span>strong evidence · almost certain</span></div>
+          <div class="certainty-item"><strong>MAY / MIGHT / COULD</strong><span>possible · not certain</span></div>
+          <div class="certainty-item"><strong>CAN'T / COULDN'T</strong><span>strong evidence against</span></div>
+        </div>
+
+        <div class="judge-grid">
+          <article class="evidence-panel" data-tone="fact">
+            <span class="evidence-label">A · Strongest evidence</span>
+            <h3>FACT OR INFERENCE?</h3>
+            <p class="evidence-sentence">Choose one detail the speaker states directly.</p>
+            <p class="partner-prompt">Ask: What evidence makes you so sure?</p>
+          </article>
+          <article class="evidence-panel" data-tone="inference">
+            <span class="evidence-label">B · Evidence to verify</span>
+            <h3>MUST, MIGHT OR CAN'T?</h3>
+            <p class="evidence-sentence">Turn one note into a cautious conclusion.</p>
+            <p class="partner-prompt">Ask: Did the speaker state that, or are you inferring it?</p>
+          </article>
+          <article class="evidence-panel" data-tone="past">
+            <span class="evidence-label">C · Past deduction</span>
+            <h3>MODAL + HAVE + P.P.</h3>
+            <p class="evidence-sentence">Explain one decision filmmakers made in the past.</p>
+            <p class="partner-prompt">Check: has the time changed the verb form?</p>
+          </article>
+        </div>
+
+        <div class="inline-actions" style="justify-content:flex-end; margin-top:.75rem;">
+          <button class="reveal-button" type="button" data-reveal="judge-models" aria-expanded="false">Reveal model language</button>
+        </div>
+        <div class="reveal-content" id="judge-models" hidden>
+          <strong>Fact:</strong> Canada offers tax credits to film producers.<br>
+          <strong>Inference:</strong> Canada <em>might be</em> a cheaper location because tax credits reduce costs.<br>
+          <strong>Past deduction:</strong> Some filmmakers <em>may have chosen</em> Jordan in order to avoid VAT.
+        </div>
+
+        <div class="teacher-toggle-row"><button class="reveal-button" type="button" data-guide-toggle="guide-judge" aria-expanded="false">Teacher guide</button></div>
+        <div class="teacher-guide" id="guide-judge" hidden>
+          <div class="guide-grid">
+            <div class="guide-item"><strong>Say</strong>“The modal is your confidence meter. Stronger evidence allows a stronger claim.”</div>
+            <div class="guide-item"><strong>Grouping &amp; timing</strong>Pairs · 6 min.</div>
+            <div class="guide-item"><strong>Product</strong>One direct fact, one inference and one past deduction.</div>
+            <div class="guide-item"><strong>Observe</strong>Do students confuse a stated fact with their own inference?</div>
+          </div>
+          <div class="guide-grid guide-diff">
+            <div class="guide-item"><strong>Support</strong>Choose from must, might and can't.</div>
+            <div class="guide-item"><strong>Core</strong>Add a because-clause with listening evidence.</div>
+            <div class="guide-item"><strong>Challenge</strong>Explain what new evidence would change the modal.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" data-scene="connect" aria-hidden="true" aria-labelledby="connect-title" hidden>
+        <div class="scene-heading">
+          <div>
+            <p class="eyebrow">Step 3 · Individual → pair · 6 min</p>
+            <h2 id="connect-title" tabindex="-1">Connect cause and effect.</h2>
+            <p class="scene-subtitle">Choose one cause, one linker and one effect. Then copy the complete logic chain to the worksheet.</p>
+          </div>
+          <div class="timer" data-timer data-seconds="360">
+            <span class="timer-display" data-timer-display aria-live="polite">06:00</span>
+            <div class="timer-actions"><button type="button" data-action="timer-start">▶ Start</button><button type="button" data-action="timer-reset">↺ Reset</button></div>
+          </div>
+        </div>
+
+        <div class="chain-panel">
+          <div class="chain-builder">
+            <div class="chip-bank">
+              <h3>1 · Cause</h3>
+              <div class="chip-list">
+                <button class="chip" type="button" data-chain-part="cause" data-text="Canada offers tax credits">Canada offers tax credits</button>
+                <button class="chip" type="button" data-chain-part="cause" data-text="films made in Mexico are treated as exports">Mexico treats films as exports</button>
+                <button class="chip" type="button" data-chain-part="cause" data-text="Jordan helps producers avoid VAT">Jordan helps producers avoid VAT</button>
+              </div>
+            </div>
+            <div class="chip-bank">
+              <h3>2 · Linker</h3>
+              <div class="chip-list">
+                <button class="chip" type="button" data-chain-part="linker" data-text="Since">Since</button>
+                <button class="chip" type="button" data-chain-part="linker" data-text="Due to the fact that">Due to the fact that</button>
+                <button class="chip" type="button" data-chain-part="linker" data-text="Because">Because</button>
+              </div>
+            </div>
+            <div class="chip-bank">
+              <h3>3 · Effect</h3>
+              <div class="chip-list">
+                <button class="chip" type="button" data-chain-part="effect" data-text="filmmakers can reduce production costs">filmmakers can reduce production costs</button>
+                <button class="chip" type="button" data-chain-part="effect" data-text="producers can avoid certain taxes">producers can avoid certain taxes</button>
+                <button class="chip" type="button" data-chain-part="effect" data-text="more films are made there">more films are made there</button>
+              </div>
+            </div>
+          </div>
+          <div class="chain-output" data-chain-output aria-live="polite">Choose a cause, a linker and an effect.</div>
+          <div class="purpose-strip"><strong>Purpose tool:</strong> Use <em>in order to + verb</em>: “Some producers film abroad in order to reduce costs.”</div>
+        </div>
+
+        <div class="inline-actions" style="justify-content:flex-end; margin-top:.75rem;">
+          <button class="reveal-button" type="button" data-reveal="logic-check" aria-expanded="false">Reveal logic check</button>
+        </div>
+        <div class="reveal-content" id="logic-check" hidden>
+          <strong>Check the direction:</strong> Cause → result. Use <em>since / because / due to</em> to introduce the reason; use <em>therefore / as a result / consequently</em> before a separate result sentence.
+        </div>
+
+        <div class="teacher-toggle-row"><button class="reveal-button" type="button" data-guide-toggle="guide-connect" aria-expanded="false">Teacher guide</button></div>
+        <div class="teacher-guide" id="guide-connect" hidden>
+          <div class="guide-grid">
+            <div class="guide-item"><strong>Say</strong>“A connector cannot rescue weak logic. Check the direction before choosing the linker.”</div>
+            <div class="guide-item"><strong>Grouping &amp; timing</strong>Individual → pair · 6 min.</div>
+            <div class="guide-item"><strong>Product</strong>One accurate two-clause cause-effect chain.</div>
+            <div class="guide-item"><strong>Observe</strong>Does each sentence keep cause before result?</div>
+          </div>
+          <div class="guide-grid guide-diff">
+            <div class="guide-item"><strong>Support</strong>Match one country with its correct effect.</div>
+            <div class="guide-item"><strong>Core</strong>Add a second result using therefore.</div>
+            <div class="guide-item"><strong>Challenge</strong>Add a purpose clause and one limitation.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" data-scene="argue" aria-hidden="true" aria-labelledby="argue-title" hidden>
+        <div class="scene-heading">
+          <div>
+            <p class="eyebrow">Step 4 · Four-person committee · 8 min</p>
+            <h2 id="argue-title" tabindex="-1">Build the recommendation.</h2>
+            <p class="scene-subtitle">Two pairs merge. Each member checks one part before the team is cleared to pitch.</p>
+          </div>
+          <div class="timer" data-timer data-seconds="480">
+            <span class="timer-display" data-timer-display aria-live="polite">08:00</span>
+            <div class="timer-actions"><button type="button" data-action="timer-start">▶ Start</button><button type="button" data-action="timer-reset">↺ Reset</button></div>
+          </div>
+        </div>
+
+        <div class="role-grid">
+          <article class="role-panel"><h3>Evidence keeper</h3><p>Verify every detail against the listening notes.</p></article>
+          <article class="role-panel"><h3>Language checker</h3><p>Check the modal and tense against certainty and time.</p></article>
+          <article class="role-panel"><h3>Logic checker</h3><p>Check that each reason leads to the stated result.</p></article>
+          <article class="role-panel"><h3>Speaker</h3><p>Deliver the final argument clearly within 60 seconds.</p></article>
+        </div>
+
+        <div class="cer-board" aria-label="Claim evidence reason pitch planner">
+          <div class="cer-part"><span class="cer-letter">C</span><strong>CLAIM</strong><p>We recommend filming in ______.</p></div>
+          <div class="cer-part"><span class="cer-letter">E</span><strong>EVIDENCE</strong><p>The presentation states that ______.</p></div>
+          <div class="cer-part"><span class="cer-letter">R</span><strong>REASON</strong><p>Since ______, ______. Therefore, ______.</p></div>
+          <div class="cer-part"><span class="cer-letter">±</span><strong>CERTAINTY + LIMIT</strong><p>This location must / might be suitable because ______. However, ______ might still be a concern.</p></div>
+        </div>
+
+        <div class="inline-actions" style="justify-content:flex-end; margin-top:.75rem;">
+          <button class="reveal-button" type="button" data-reveal="pitch-model" aria-expanded="false">Reveal model pitch</button>
+        </div>
+        <div class="reveal-content" id="pitch-model" hidden>
+          We recommend filming in Canada. The presentation states that filmmakers can receive tax credits there. Since these credits reduce production costs, Canada is an attractive location. Therefore, the company may save money by filming there. Canada must be a strong option, although we still need information about labour and environmental costs.
+        </div>
+
+        <div class="teacher-toggle-row"><button class="reveal-button" type="button" data-guide-toggle="guide-argue" aria-expanded="false">Teacher guide</button></div>
+        <div class="teacher-guide" id="guide-argue" hidden>
+          <div class="guide-grid">
+            <div class="guide-item"><strong>Say</strong>“Do not vote yet. First make every link in your argument auditable.”</div>
+            <div class="guide-item"><strong>Grouping &amp; timing</strong>Four-person committee (two pairs merge) · 8 min.</div>
+            <div class="guide-item"><strong>Product</strong>A signed CER plan and one 60-second rehearsal.</div>
+            <div class="guide-item"><strong>Observe</strong>Does each member check the whole argument, or only their own role?</div>
+          </div>
+          <div class="guide-grid guide-diff">
+            <div class="guide-item"><strong>Support</strong>Use the printed sentence frames unchanged.</div>
+            <div class="guide-item"><strong>Core</strong>Use one fact and one justified inference.</div>
+            <div class="guide-item"><strong>Challenge</strong>Acknowledge a hidden cost or missing evidence.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" data-scene="decide" aria-hidden="true" aria-labelledby="decide-title" hidden>
+        <div class="scene-heading">
+          <div>
+            <p class="eyebrow">Step 5 · Hearing and vote · 10 min</p>
+            <h2 id="decide-title" tabindex="-1">Test the argument. Then decide.</h2>
+            <p class="scene-subtitle">Pitch for 60 seconds. Another team draws one question. The jury checks evidence, language and logic.</p>
+          </div>
+          <div class="timer" data-timer data-seconds="60">
+            <span class="timer-display" data-timer-display aria-live="polite">01:00</span>
+            <div class="timer-actions"><button type="button" data-action="timer-start">▶ Start</button><button type="button" data-action="timer-reset">↺ Reset</button></div>
+          </div>
+        </div>
+
+        <div class="hearing-grid">
+          <div class="question-stage">
+            <div>
+              <p class="question-output" data-question-output aria-live="polite">Draw one challenge question after each pitch.</p>
+              <button class="question-button" type="button" data-action="random-question">Draw question</button>
+            </div>
+          </div>
+          <aside class="jury-panel">
+            <h3>Fact-checker / peer jury</h3>
+            <ul class="check-list">
+              <li>Country, cause and result are accurate.</li>
+              <li>The claim is clear.</li>
+              <li>Listening evidence supports the claim.</li>
+              <li>Modal and tense match the certainty.</li>
+              <li>Cause and effect are logically connected.</li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="vote-board" aria-label="Class vote counter">
+          <button class="vote-button" type="button" data-vote="Canada">CANADA <span class="vote-count" data-vote-count="Canada">0</span></button>
+          <button class="vote-button" type="button" data-vote="Mexico">MEXICO <span class="vote-count" data-vote-count="Mexico">0</span></button>
+          <button class="vote-button" type="button" data-vote="Jordan">JORDAN <span class="vote-count" data-vote-count="Jordan">0</span></button>
+        </div>
+        <p class="final-frame">We support ______ because the evidence shows ______. However, ______ might still be a concern.</p>
+
+        <div class="teacher-toggle-row"><button class="reveal-button" type="button" data-guide-toggle="guide-decide" aria-expanded="false">Teacher guide</button></div>
+        <div class="teacher-guide" id="guide-decide" hidden>
+          <div class="guide-grid">
+            <div class="guide-item"><strong>Say</strong>“Challenge the evidence, not the speaker. A question should help the claim become more precise.”</div>
+            <div class="guide-item"><strong>Grouping &amp; timing</strong>One team pitches, another asks · 10 min.</div>
+            <div class="guide-item"><strong>Product</strong>One pitch, one answer to challenge and one evidence-based vote.</div>
+            <div class="guide-item"><strong>Observe</strong>Does the question target evidence, logic or language — not the person?</div>
+          </div>
+          <div class="guide-grid guide-diff">
+            <div class="guide-item"><strong>Support</strong>Ask “What evidence supports your claim?”</div>
+            <div class="guide-item"><strong>Core</strong>Ask fact/inference or certainty questions.</div>
+            <div class="guide-item"><strong>Challenge</strong>Ask what missing evidence could reverse the decision.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" data-scene="takeaway" aria-hidden="true" aria-labelledby="takeaway-title" hidden>
+        <div class="scene-heading">
+          <div>
+            <p class="eyebrow">Take-away · 2 min</p>
+            <h2 id="takeaway-title" tabindex="-1">Good speaking begins with accurate listening.</h2>
+            <p class="scene-subtitle">五个知识点不是五道孤立的题，而是一条从输入到决策的完整思维链。</p>
+          </div>
+          <span class="phase-tag">EXIT REFLECTION</span>
+        </div>
+
+        <div class="takeaway-grid">
+          <article class="takeaway-card"><span class="big-number">01</span><h3>LISTEN</h3><p>Record country, cause and result. Do not copy every word.</p></article>
+          <article class="takeaway-card"><span class="big-number">02</span><h3>JUDGE</h3><p>Let evidence strength decide must, might or can't.</p></article>
+          <article class="takeaway-card"><span class="big-number">03</span><h3>CONNECT</h3><p>Check the logic before selecting a cause-effect linker.</p></article>
+          <article class="takeaway-card"><span class="big-number">04</span><h3>ARGUE</h3><p>Build a claim with evidence and explain why it supports the claim.</p></article>
+          <article class="takeaway-card"><span class="big-number">05</span><h3>DECIDE</h3><p>Make a provisional decision and state what may still be missing.</p></article>
+        </div>
+
+        <p class="takeaway-quote">First organize the information. Next judge how certain it is. Then connect causes and effects. Finally make a claim and support it with evidence.</p>
+
+        <div class="inline-actions" style="justify-content:center; margin-top:.85rem;">
+          <button class="reveal-button" type="button" data-reveal="exit-question" aria-expanded="false">Reveal exit question</button>
+        </div>
+        <div class="reveal-content" id="exit-question" hidden style="text-align:center; font-size:1.05rem;">
+          <strong>One-minute reflection:</strong> Which step made your final decision stronger, and why?
+        </div>
+
+        <div class="teacher-toggle-row"><button class="reveal-button" type="button" data-guide-toggle="guide-takeaway" aria-expanded="false">Teacher guide</button></div>
+        <div class="teacher-guide" id="guide-takeaway" hidden>
+          <div class="guide-grid">
+            <div class="guide-item"><strong>Say</strong>“I think is only the beginning. Strong academic speaking shows where the idea came from.”</div>
+            <div class="guide-item"><strong>Grouping &amp; timing</strong>Individual → whole class · 2 min.</div>
+            <div class="guide-item"><strong>Product</strong>One oral or written reflection sentence.</div>
+            <div class="guide-item"><strong>Observe</strong>Can a student name the step that most changed their decision?</div>
+          </div>
+          <div class="guide-grid guide-diff">
+            <div class="guide-item"><strong>Support</strong>“_____ helped me because _____.”</div>
+            <div class="guide-item"><strong>Core</strong>Name one change from first guess to final decision.</div>
+            <div class="guide-item"><strong>Challenge</strong>Identify evidence still needed before a real investment.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="control-deck">
+      <span class="scene-count" data-scene-count aria-live="polite">Briefing · 1 of 7</span>
+      <span class="keyboard-hint">Keyboard: ← previous · → next</span>
+      <div class="nav-actions">
+        <button class="control-button" type="button" data-action="prev" disabled>← Previous</button>
+        <button class="control-button primary" type="button" data-action="next">Next →</button>
+      </div>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" data-reset-dialog hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reset-title">
+      <h2 id="reset-title">Reset the lesson?</h2>
+      <p>This returns to the mission briefing and clears timers, reveals, chain selections, questions and votes.</p>
+      <div class="modal-actions">
+        <button class="control-button" type="button" data-action="cancel-reset">Cancel</button>
+        <button class="control-button danger" type="button" data-action="confirm-reset">Reset lesson</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const scenes = Array.from(document.querySelectorAll('[data-scene]'));
+      const progressSteps = Array.from(document.querySelectorAll('[data-progress-index]'));
+      const prevButton = document.querySelector('[data-action="prev"]');
+      const nextButton = document.querySelector('[data-action="next"]');
+      const sceneCount = document.querySelector('[data-scene-count]');
+      const resetDialog = document.querySelector('[data-reset-dialog]');
+      const timers = new Map();
+      const votes = { Canada: 0, Mexico: 0, Jordan: 0 };
+      const chainSelection = { cause: '', linker: '', effect: '' };
+      const questions = [
+        'What evidence supports your claim?',
+        'How certain are you, and why?',
+        'Is that a fact or an inference?',
+        'What might be a hidden cost?',
+        'What new evidence could change your conclusion?'
+      ];
+      let currentScene = 0;
+      let previousQuestion = -1;
+
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const remainder = (seconds % 60).toString().padStart(2, '0');
+        return `${minutes}:${remainder}`;
+      }
+
+      function setScene(index, moveFocus = true) {
+        currentScene = Math.max(0, Math.min(index, scenes.length - 1));
+        scenes.forEach((scene, sceneIndex) => {
+          const active = sceneIndex === currentScene;
+          scene.hidden = !active;
+          scene.setAttribute('aria-hidden', active ? 'false' : 'true');
+        });
+
+        progressSteps.forEach((step) => {
+          const stepIndex = Number(step.dataset.progressIndex);
+          const activeStep = currentScene >= 1 && currentScene <= 5 ? currentScene : (currentScene === 6 ? 5 : 0);
+          step.classList.toggle('active', stepIndex === activeStep);
+          step.classList.toggle('complete', currentScene === 6 || stepIndex < activeStep);
+          if (stepIndex === activeStep) step.setAttribute('aria-current', 'step');
+          else step.removeAttribute('aria-current');
+        });
+
+        prevButton.disabled = currentScene === 0;
+        nextButton.disabled = currentScene === scenes.length - 1;
+        nextButton.textContent = currentScene === scenes.length - 2 ? 'Take-away →' : 'Next →';
+        const label = scenes[currentScene].querySelector('.eyebrow').textContent.split('·')[0].trim();
+        sceneCount.textContent = `${label} · ${currentScene + 1} of ${scenes.length}`;
+        document.querySelector('.stage').scrollTop = 0;
+        if (moveFocus) scenes[currentScene].querySelector('h1, h2').focus({ preventScroll: true });
+      }
+
+      function toggleTarget(button, targetId) {
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        const willOpen = target.hidden;
+        target.hidden = !willOpen;
+        button.setAttribute('aria-expanded', String(willOpen));
+        if (button.hasAttribute('data-guide-toggle')) {
+          button.textContent = willOpen ? 'Hide teacher guide' : 'Teacher guide';
+        } else {
+          button.textContent = willOpen ? 'Hide' : (button.dataset.closedLabel || button.textContent);
+        }
+      }
+
+      function timerState(timer) {
+        if (!timers.has(timer)) {
+          timers.set(timer, {
+            remaining: Number(timer.dataset.seconds),
+            interval: null,
+            button: timer.querySelector('[data-action="timer-start"]'),
+            display: timer.querySelector('[data-timer-display]')
+          });
+        }
+        return timers.get(timer);
+      }
+
+      function stopTimer(timer) {
+        const state = timerState(timer);
+        if (state.interval) window.clearInterval(state.interval);
+        state.interval = null;
+        state.button.textContent = '▶ Start';
+        timer.classList.remove('running');
+      }
+
+      function startOrPauseTimer(timer) {
+        const state = timerState(timer);
+        if (state.interval) {
+          stopTimer(timer);
+          return;
+        }
+        if (state.remaining <= 0) resetTimer(timer);
+        state.button.textContent = 'Ⅱ Pause';
+        timer.classList.add('running');
+        timer.classList.remove('elapsed');
+        state.interval = window.setInterval(() => {
+          state.remaining -= 1;
+          state.display.textContent = formatTime(state.remaining);
+          if (state.remaining <= 0) {
+            stopTimer(timer);
+            timer.classList.add('elapsed');
+            state.display.textContent = 'TIME';
+          }
+        }, 1000);
+      }
+
+      function resetTimer(timer) {
+        const state = timerState(timer);
+        stopTimer(timer);
+        state.remaining = Number(timer.dataset.seconds);
+        state.display.textContent = formatTime(state.remaining);
+        timer.classList.remove('elapsed');
+      }
+
+      function updateChain() {
+        const output = document.querySelector('[data-chain-output]');
+        const { cause, linker, effect } = chainSelection;
+        if (cause && linker && effect) output.textContent = `${linker} ${cause}, ${effect}.`;
+        else {
+          const missing = ['cause', 'linker', 'effect'].filter((part) => !chainSelection[part]);
+          output.textContent = `Choose ${missing.join(', ')}.`;
+        }
+      }
+
+      function drawQuestion() {
+        let next = previousQuestion;
+        while (next === previousQuestion) next = Math.floor(Math.random() * questions.length);
+        previousQuestion = next;
+        document.querySelector('[data-question-output]').textContent = questions[next];
+      }
+
+      function resetLesson() {
+        document.querySelectorAll('[data-reveal], [data-guide-toggle]').forEach((button) => {
+          const targetId = button.dataset.reveal || button.dataset.guideToggle;
+          const target = document.getElementById(targetId);
+          if (target) target.hidden = true;
+          button.setAttribute('aria-expanded', 'false');
+          if (button.hasAttribute('data-guide-toggle')) button.textContent = 'Teacher guide';
+          else if (button.dataset.closedLabel) button.textContent = button.dataset.closedLabel;
+        });
+        document.querySelectorAll('[data-timer]').forEach(resetTimer);
+        document.querySelectorAll('[data-chain-part]').forEach((button) => button.classList.remove('selected'));
+        chainSelection.cause = '';
+        chainSelection.linker = '';
+        chainSelection.effect = '';
+        updateChain();
+        previousQuestion = -1;
+        document.querySelector('[data-question-output]').textContent = 'Draw one challenge question after each pitch.';
+        Object.keys(votes).forEach((location) => {
+          votes[location] = 0;
+          document.querySelector(`[data-vote-count="${location}"]`).textContent = '0';
+        });
+        resetDialog.hidden = true;
+        setScene(0);
+      }
+
+      document.querySelectorAll('[data-reveal]').forEach((button) => {
+        button.dataset.closedLabel = button.textContent;
+        button.addEventListener('click', () => toggleTarget(button, button.dataset.reveal));
+      });
+
+      document.querySelectorAll('[data-guide-toggle]').forEach((button) => {
+        button.addEventListener('click', () => toggleTarget(button, button.dataset.guideToggle));
+      });
+
+      document.querySelectorAll('[data-timer]').forEach((timer) => timerState(timer));
+
+      document.querySelectorAll('[data-chain-part]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const part = button.dataset.chainPart;
+          document.querySelectorAll(`[data-chain-part="${part}"]`).forEach((candidate) => candidate.classList.remove('selected'));
+          button.classList.add('selected');
+          chainSelection[part] = button.dataset.text;
+          updateChain();
+        });
+      });
+
+      progressSteps.forEach((button) => {
+        button.addEventListener('click', () => setScene(Number(button.dataset.progressIndex)));
+      });
+
+      document.querySelectorAll('[data-vote]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const location = button.dataset.vote;
+          votes[location] += 1;
+          document.querySelector(`[data-vote-count="${location}"]`).textContent = String(votes[location]);
+        });
+      });
+
+      document.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-action]');
+        if (!button) return;
+        const action = button.dataset.action;
+        if (action === 'prev') setScene(currentScene - 1);
+        if (action === 'next') setScene(currentScene + 1);
+        if (action === 'timer-start') startOrPauseTimer(button.closest('[data-timer]'));
+        if (action === 'timer-reset') resetTimer(button.closest('[data-timer]'));
+        if (action === 'random-question') drawQuestion();
+        if (action === 'reset') {
+          resetDialog.hidden = false;
+          resetDialog.querySelector('[data-action="cancel-reset"]').focus();
+        }
+        if (action === 'cancel-reset') resetDialog.hidden = true;
+        if (action === 'confirm-reset') resetLesson();
+        if (action === 'fullscreen') {
+          try {
+            if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+            else await document.exitFullscreen();
+          } catch (error) {
+            console.warn('Fullscreen is unavailable in this browser context.');
+          }
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (resetDialog.hidden === false && event.key === 'Escape') {
+          resetDialog.hidden = true;
+          return;
+        }
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName)) return;
+        if (event.key === 'ArrowLeft') setScene(currentScene - 1);
+        if (event.key === 'ArrowRight') setScene(currentScene + 1);
+      });
+
+      setScene(0, false);
+    })();
+  </script>
+</body>
+</html>
